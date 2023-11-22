@@ -11,18 +11,21 @@ public interface PriorityQueue<E extends Comparable<E>>
     /**
      * Adds the specified element to the queue in priority order.
      * @param element The element to add to the queue.
+     * @throws IllegalArgumentException If the specified element to add is null.
      */
     void add(E element);
 
     /**
      * Gets the next element from the queue, in priority order, without removing it.
      * @return The next element, in priority order.
+     * @throws NoSuchElementException If the queue is empty.
      */
     E get();
 
     /**
      * Removes the next element from the queue, in priority order.
      * @return The next element, in priority order.
+     * @throws NoSuchElementException If the queue is empty.
      */
     E remove();
 
