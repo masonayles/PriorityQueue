@@ -18,11 +18,11 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
         {
             throw new IllegalArgumentException();
         }
-        _heap
-    }
+        _heap = (E[]) new Comparable[DEFAULT];
+        _size = 0;    }
 
     /**
-     * 
+     *
      */
     public BinaryMinHeap()
     {
@@ -142,15 +142,4 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 }
