@@ -12,7 +12,6 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     private static final int DEFAULT = 10;
 
     /**
-     *
      * @param initialCapacity
      */
     public BinaryMinHeap(int initialCapacity)
@@ -22,7 +21,8 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
             throw new IllegalArgumentException();
         }
         _heap = (E[]) new Comparable[DEFAULT];
-        _size = 0;    }
+        _size = 0;
+    }
 
     /**
      *
@@ -33,7 +33,6 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
-     *
      * @param element
      */
     public void add(E element)
@@ -54,6 +53,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
 
     /**
      * Retrieves, but does not remove, the minimum element of the heap.
+     *
      * @return the minimum element
      */
     public E get()
@@ -67,6 +67,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
 
     /**
      * Retrieves and removes the minimum element of the heap.
+     *
      * @return the minimum element
      */
     public E remove()
@@ -87,29 +88,30 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
      */
     public void clear()
     {
+        // Arrays is extremely useful learning about copyOf and .fill
+        // much cleaner than using a loop.
         Arrays.fill(_heap, null);
         _size = 0;
     }
 
     /**
      * Returns the number of elements in the heap.
+     *
      * @return the number of elements
      */
-    public int size() {
+    public int size()
+    {
         return _size;
     }
 
     /**
-     *
      * @return
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return _size == 0;
     }
 
     /**
-     *
      * @return
      */
     public Iterator<E> iterator()
@@ -117,15 +119,18 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
         return new BinaryMinHeapIterator();
     }
 
+    /**
+     * @param index
+     */
     private void _siftUp(int index)
     {
         E element = _heap[index];
-        while (index > 0)
-        {
+        while (index > 0) {
             int parentIndex = (index - 1) / 2;
             E parent = _heap[parentIndex];
             if (element.compareTo(parent) >= 0)
             {
+                _heap[index] = element;
                 return;
             }
             _heap[index] = parent;
@@ -134,58 +139,75 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
         _heap[index] = element;
     }
 
+    /**
+     *
+     * @param index
+     */
     private void _siftDown(int index)
     {
         E element = _heap[index];
         int childIndex = 2 * index + 1;
-        while (childIndex < _size)
-        {
-            if (childIndex + 1 < _size && _heap[childIndex + 1].compareTo(_heap[childIndex]) < 0) {
-                childIndex++;
-            }
-            if (element.compareTo(_heap[childIndex]) <= 0)
+        while (childIndex < _size) {
+            int smallestChild = childIndex;
+            if (childIndex + 1 < _size && _heap[childIndex + 1].compareTo(_heap[childIndex]) < 0)
             {
+                smallestChild = childIndex + 1;
+            }
+            if (element.compareTo(_heap[smallestChild]) <= 0)
+            {
+                _heap[index] = element;
                 return;
             }
-            _heap[index] = _heap[childIndex];
-            index = childIndex;
+            _heap[index] = _heap[smallestChild];
+            index = smallestChild;
             childIndex = 2 * index + 1;
         }
         _heap[index] = element;
     }
 
     /**
-     *
+     * _grow is a private method that is used to grow the length of the heap by 2x
+     * then use Array copy to copy old heap into new heap
      */
-    private void grow()
-    {
-        while ( )
-
+    private void _grow() {
+        _heap = Arrays.copyOf(_heap, _heap.length * 2);
     }
 
     /**
-     *
+     * BinaryMinHeapIterator is a private class within BinaryMinHeap that is used to
+     * Iterate through each element while using hasNext and next methods.
      */
     private class BinaryMinHeapIterator implements Iterator<E>
     {
-        private int _index = 0;
-
-        /**
-         *
-         * @return
-         */
-        public boolean hasNext()
+        private final BinaryMinHeap<E> heapCopy = new BinaryMinHeap<>(_heap.length);
         {
-
+            for (int i = 0; i < _size; i++)
+            {
+                heapCopy.add(_heap[i]);
+            }
         }
 
         /**
+         * Checks if there is a next element in the heap.
          *
-         * @return
+         * @return returns true if there is a next element.
+         */
+        public boolean hasNext()
+        {
+            return !heapCopy.isEmpty();
+        }
+
+        /**
+         * Retreives the next element in the heap.
+         * @return returns the next element in the heap.
          */
         public E next()
         {
-
+            if (!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+            return heapCopy.remove();
         }
     }
 }
