@@ -66,7 +66,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
 
     /**
      * Retrieves and removes the minimum element of the heap.
-     *
+     * 
      * @return the minimum element
      */
     public E remove()
