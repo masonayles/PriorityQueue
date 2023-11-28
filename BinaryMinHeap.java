@@ -56,14 +56,13 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
      *
      * @return the minimum element
      */
-    public E get()
-    {
-        if (isEmpty())
-        {
-            throw new NoSuchElementException();
+    public E get() {
+        if (isEmpty()) {
+            return null;
         }
         return _heap[0];
     }
+
 
     /**
      * Retrieves and removes the minimum element of the heap.
@@ -122,7 +121,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     /**
      * @param index
      */
-    private void _siftUp(int index)
+    void _siftUp(int index)
     {
         E element = _heap[index];
         while (index > 0) {
@@ -143,7 +142,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
      *
      * @param index
      */
-    private void _siftDown(int index)
+    void _siftDown(int index)
     {
         E element = _heap[index];
         int childIndex = 2 * index + 1;
@@ -172,6 +171,8 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     private void _grow() {
         _heap = Arrays.copyOf(_heap, _heap.length * 2);
     }
+
+
 
     /**
      * BinaryMinHeapIterator is a private class within BinaryMinHeap that is used to
