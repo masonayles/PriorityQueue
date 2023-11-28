@@ -2,8 +2,12 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
+ * This binary min-heap implementation of a priority queue ensures that
+ * the element at the root is the smallest among all elements.
+ * It provides efficient operations to maintain the heap property when
+ * elements are added or removed.
  *
- * @param <E>
+ * @param <E> the type of elements in this heap, which must be Comparable
  */
 public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
 {
@@ -12,7 +16,10 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     private static final int DEFAULT = 10;
 
     /**
-     * @param initialCapacity
+     * Constructs a new BinaryMinHeap with the specified initial capacity.
+     *
+     * @param initialCapacity the initial capacity of the heap
+     * @throws IllegalArgumentException if the initial capacity is less than 1
      */
     public BinaryMinHeap(int initialCapacity)
     {
@@ -25,7 +32,7 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
-     *
+     * Constructs a new BinaryMinHeap with the default initial capacity.
      */
     public BinaryMinHeap()
     {
@@ -33,40 +40,47 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
-     * @param element
+     * Adds the specified element to the heap in priority order.
+     * The element must not be null and must be comparable to other elements in the heap.
+     * This method ensures that the heap property is maintained after the addition.
+     *
+     * @param element the element to add to the heap
+     * @throws IllegalArgumentException if the element is null
      */
-    public void add(E element)
-    {
-        if (element == null)
-        {
-            throw new IllegalArgumentException();
+    public void add(E element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Cannot add null to the BinaryMinHeap");
         }
-        if (_size == _heap.length)
-        {
+        if (_size == _heap.length) {
             _grow();
         }
-        _heap[_size] = element;
+        _heap[_size] = element; // Insert the element at the end of the heap
         _siftUp(_size);
         _size++;
     }
 
 
+
     /**
-     * Retrieves, but does not remove, the minimum element of the heap.
+     * Retrieves, without removing, the highest-priority element from the heap.
+     * This will be the smallest element as per the min-heap property.
+     * If the heap is empty, this method throws a NoSuchElementException.
      *
-     * @return the minimum element
+     * @return the highest-priority element in the heap
+     * @throws NoSuchElementException if the heap is empty
      */
     public E get() {
         if (isEmpty()) {
-            return null;
+            throw new NoSuchElementException();
         }
         return _heap[0];
     }
 
 
+
     /**
      * Retrieves and removes the minimum element of the heap.
-     * 
+     *
      * @return the minimum element
      */
     public E remove()
@@ -104,14 +118,19 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
-     * @return
+     * Returns _size == 0
+     * @return returns _size == 0
      */
     public boolean isEmpty() {
         return _size == 0;
     }
 
     /**
-     * @return
+     * Creates and returns an iterator for the binary min heap.
+     * The iterator will iterate over the heap so that each call to next()
+     * returns the smallest element remaining in the heap and removes it from the heap.
+     *
+     * @return an iterator that consumes elements from the heap in ascending order
      */
     public Iterator<E> iterator()
     {
@@ -119,7 +138,13 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
-     * @param index
+     * Restores the heap property by moving the element at the specified index up
+     * the heap until it is greater than or equal to its parent or is at the root of the heap.
+     *
+     * This method is used when a new element is added to the heap and may violate
+     * the heap property by being smaller than its parent.
+     *
+     * @param index the index of the element to sift up
      */
     void _siftUp(int index)
     {
@@ -139,8 +164,13 @@ public class BinaryMinHeap<E extends Comparable<E>> implements Iterable<E>
     }
 
     /**
+     * Restores the heap property by moving the element at the specified index down
+     * the heap until it is less than or equal to its children or is at a leaf position.
      *
-     * @param index
+     * This method is used when the root element is removed and the last element of the heap
+     * is moved to the root. The heap property may be violated and needs to be restored.
+     *
+     * @param index the index of the element to sift down
      */
     void _siftDown(int index)
     {
